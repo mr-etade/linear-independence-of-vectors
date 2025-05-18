@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Linear Independence Tutorial</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+</head>
+<body>
+    <header>
+        <header>
+        <div class="school-header">
+            <h1>IBM111 Mathematics</h1>
+            <h2>Week 13 - Linear Independence of Vectors</h2>
+        </div>
+        </header>
+        <nav>
+            <ul>
+                <li><a href="#" class="active" data-section="definition">Definitions</a></li>
+                <li><a href="#" data-section="visual">Visual Understanding</a></li>
+                <li><a href="#" data-section="methods">Testing Methods</a></li>
+                <li><a href="#" data-section="basis">Basis & Span</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section id="definition" class="active-section">
+            <h2>Definitions</h2>
+            
+            <div class="definition-card">
+                <h3>Linear Dependence</h3>
+                <p>A set of vectors \(\{v_1, v_2, \ldots, v_n\}\) is <strong>linearly dependent</strong> if:</p>
+                <p>\[c_1v_1 + c_2v_2 + \ldots + c_nv_n = 0\] has non-zero solutions</p>
+                <ul>
+                    <li>At least one coefficient is not zero</li>
+                    <li>At least one vector can be written using the others</li>
+                </ul>
+                <div class="example">
+                    <h4>Example</h4>
+                    <p>Vectors \(\begin{bmatrix} 1 \\ 2 \end{bmatrix}\) and \(\begin{bmatrix} 2 \\ 4 \end{bmatrix}\) are dependent because \(2\begin{bmatrix} 1 \\ 2 \end{bmatrix} = \begin{bmatrix} 2 \\ 4 \end{bmatrix}\)</p>
+                    <div id="dependent-example-graph" class="graph"></div>
+                </div>
+            </div>
+
+            <div class="definition-card">
+                <h3>Linear Independence</h3>
+                <p>A set of vectors \(\{v_1, v_2, \ldots, v_n\}\) is <strong>linearly independent</strong> if:</p>
+                <p>\[c_1v_1 + c_2v_2 + \ldots + c_nv_n = 0\] only when all \(c_i = 0\)</p>
+                <ul>
+                    <li>No vector can be written using the others</li>
+                    <li>Each vector adds new information</li>
+                </ul>
+                <div class="example">
+                    <h4>Example</h4>
+                    <p>Vectors \(\begin{bmatrix} 1 \\ 0 \end{bmatrix}\) and \(\begin{bmatrix} 0 \\ 1 \end{bmatrix}\) are independent</p>
+                    <div id="independent-example-graph" class="graph"></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="visual">
+            <h2>Visual Understanding</h2>
+            
+            <div class="visualization">
+                <h3>2D Vectors</h3>
+                <div class="controls">
+                    <label>Vector 1: <input type="text" id="vector1" value="1,2"></label>
+                    <label>Vector 2: <input type="text" id="vector2" value="2,4"></label>
+                    <button id="plot-vectors">Plot Vectors</button>
+                </div>
+                <div id="2d-plot" class="graph"></div>
+                <div id="2d-conclusion" class="conclusion"></div>
+            </div>
+        </section>
+
+        <section id="methods">
+            <h2>Testing Methods</h2>
+            
+            <div class="method">
+                <h3>Method 1: Solving the Equation</h3>
+                <p>To test whether vectors are linearly independent, we set up and solve the equation:</p>
+                <p>\[ c_1\mathbf{v}_1 + c_2\mathbf{v}_2 + \ldots + c_n\mathbf{v}_n = \mathbf{0} \]</p>
+                
+                <div class="step-by-step">
+                    <h4>Step-by-Step Solution:</h4>
+                    
+                    <div class="step">
+                        <p><strong>Step 1:</strong> Write the vector equation</p>
+                        <p>For vectors \( \mathbf{v}_1 = \begin{bmatrix} 1 \\ 2 \end{bmatrix} \) and \( \mathbf{v}_2 = \begin{bmatrix} 2 \\ 4 \end{bmatrix} \), we have:</p>
+                        <p>\[ c_1\begin{bmatrix} 1 \\ 2 \end{bmatrix} + c_2\begin{bmatrix} 2 \\ 4 \end{bmatrix} = \begin{bmatrix} 0 \\ 0 \end{bmatrix} \]</p>
+                    </div>
+                    
+                    <div class="step">
+                        <p><strong>Step 2:</strong> Expand into a system of equations</p>
+                        <p>\[ 
+                        \begin{cases}
+                        c_1(1) + c_2(2) = 0 \\
+                        c_1(2) + c_2(4) = 0
+                        \end{cases}
+                        \]</p>
+                        <p>Which simplifies to:</p>
+                        <p>\[ 
+                        \begin{cases}
+                        c_1 + 2c_2 = 0 \quad \text{(Equation 1)} \\
+                        2c_1 + 4c_2 = 0 \quad \text{(Equation 2)}
+                        \end{cases}
+                        \]</p>
+                    </div>
+                    
+                    <div class="step">
+                        <p><strong>Step 3:</strong> Solve the system</p>
+                        <p>From Equation 1:</p>
+                        <p>\[ c_1 = -2c_2 \]</p>
+                        
+                        <p>Substitute into Equation 2:</p>
+                        <p>\[ 2(-2c_2) + 4c_2 = 0 \]</p>
+                        <p>\[ -4c_2 + 4c_2 = 0 \]</p>
+                        <p>\[ 0 = 0 \]</p>
+                    </div>
+                    
+                    <div class="step">
+                        <p><strong>Step 4:</strong> Analyze the solution</p>
+                        <p>The system reduces to \( c_1 = -2c_2 \), meaning there are infinitely many non-zero solutions.</p>
+                        <p>For example:</p>
+                        <p>When \( c_2 = 1 \), then \( c_1 = -2 \)</p>
+                        <p>This gives the non-trivial combination:</p>
+                        <p>\[ -2\begin{bmatrix} 1 \\ 2 \end{bmatrix} + 1\begin{bmatrix} 2 \\ 4 \end{bmatrix} = \begin{bmatrix} 0 \\ 0 \end{bmatrix} \]</p>
+                    </div>
+                    
+                    <div class="conclusion">
+                        <p><strong>Conclusion:</strong> Since there exists a non-trivial solution where not all coefficients are zero, the vectors are <span class="dependent">linearly dependent</span>.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="method">
+            <h3>Method 2: Matrix Method</h3>
+            <p>To test linear independence using matrices:</p>
+            <ol>
+                <li>Form a matrix with the given vectors as columns.</li>
+                <li>Row reduce the matrix to its row echelon form (REF).</li>
+                <li>Analyze the pivot positions:
+                <ul>
+                    <li>If each column has a pivot (leading 1), the vectors are <strong>linearly independent</strong>.</li>
+                    <li>If at least one column does not have a pivot, then there are free variables and the vectors are <strong>linearly dependent</strong>.</li>
+                </ul>
+                </li>
+            </ol>
+
+            <div class="interactive-example">
+                <h4>Example</h4>
+                <p>Given vectors:
+                \[
+                \mathbf{v}_1 = \begin{bmatrix} 1 \\ 2 \\ 3 \end{bmatrix}, \quad
+                \mathbf{v}_2 = \begin{bmatrix} 2 \\ 4 \\ 6 \end{bmatrix}
+                \]</p>
+
+                <p>Create matrix \( A \) with these vectors as columns:
+                \[
+                A = \begin{bmatrix}
+                1 & 2 \\
+                2 & 4 \\
+                3 & 6
+                \end{bmatrix}
+                \]</p>
+
+                <p><strong>Step 1: Row Reduce the Matrix</strong></p>
+                \[
+                \begin{bmatrix}
+                1 & 2 \\
+                2 & 4 \\
+                3 & 6
+                \end{bmatrix}
+                \xrightarrow{R_2 \leftarrow R_2 - 2R_1}
+                \begin{bmatrix}
+                1 & 2 \\
+                0 & 0 \\
+                3 & 6
+                \end{bmatrix}
+                \xrightarrow{R_3 \leftarrow R_3 - 3R_1}
+                \begin{bmatrix}
+                1 & 2 \\
+                0 & 0 \\
+                0 & 0
+                \end{bmatrix}
+                \]
+
+                <p><strong>Step 2: Analyze</strong></p>
+                <p>Only the first column has a leading 1 (pivot). The second column has no pivot.</p>
+                <p>\(\Rightarrow\) Free variable in the second column</p>
+                <p>\(\Rightarrow\) Vectors are <strong>linearly dependent</strong></p>
+            </div>
+            </div>
+
+
+            <div class="method">
+                <h3>Method 3: Determinant Test (Square Matrices)</h3>
+                <p>For \( n \) vectors in \( \mathbb{R}^n \), we test linear independence by computing the determinant of the matrix formed by the vectors as columns.</p>
+                <p><strong>Key Rule:</strong></p>
+                <ul>
+                    <li>If \( \det(A) = 0 \): Vectors are <span class="dependent">linearly dependent</span>.</li>
+                    <li>If \( \det(A) \neq 0 \): Vectors are <span class="independent">linearly independent</span>.</li>
+                </ul>
+
+                <div class="step-by-step">
+                    <h4>Example: Testing \( \mathbf{v}_1 = \begin{bmatrix} 3 \\ 1 \end{bmatrix} \) and \( \mathbf{v}_2 = \begin{bmatrix} 2 \\ 5 \end{bmatrix} \)</h4>
+                    
+                    <div class="step">
+                        <p><strong>Step 1:</strong> Construct the matrix \( A \) with the vectors as columns</p>
+                        <p>\[
+                        A = \begin{bmatrix} 
+                        \mathbf{v}_1 & \mathbf{v}_2 
+                        \end{bmatrix} 
+                        = \begin{bmatrix} 
+                        3 & 2 \\ 
+                        1 & 5 
+                        \end{bmatrix}
+                        \]</p>
+                    </div>
+
+                    <div class="step">
+                        <p><strong>Step 2:</strong> Compute the determinant of \( A \)</p>
+                        <p>For a \( 2 \times 2 \) matrix \( \begin{bmatrix} a & b \\ c & d \end{bmatrix} \), the determinant is:</p>
+                        <p>\[
+                        \det(A) = ad - bc
+                        \]</p>
+                        <p>Substituting the values:</p>
+                        <p>\[
+                        \det(A) = (3)(5) - (2)(1) = 15 - 2 = 13
+                        \]</p>
+                    </div>
+
+                    <div class="step">
+                        <p><strong>Step 3:</strong> Analyze the result</p>
+                        <p>Since \( \det(A) = 13 \neq 0 \), the vectors are <span class="independent">linearly independent</span>.</p>
+                    </div>
+
+                    <div class="conclusion">
+                        <p><strong>Conclusion:</strong> The vectors \( \mathbf{v}_1 \) and \( \mathbf{v}_2 \) are <span class="independent">independent</span> because the determinant is non-zero.</p>
+                    </div>
+                </div>
+
+                <div class="remarks">
+                    <h4>Remarks</h4>
+                    <ul>
+                        <li>This method <strong>only works for square matrices</strong> (number of vectors = dimension of space).</li>
+                        <li>For non-square matrices, use row reduction (Method 2) or the definition (Method 1).</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="basis">
+            <h2>Basis and Span</h2>
+
+            <div class="concept">
+                <h3>Span</h3>
+                <p>All possible linear combinations of vectors</p>
+                <div class="controls">
+                    <label>Vector 1: <input type="text" id="span-vector1" value="1,2"></label>
+                    <label>Vector 2: <input type="text" id="span-vector2" value="-1,1"></label>
+                    <button id="plot-span">Plot Span</button>
+                </div>
+                <div id="span-visualization" class="graph"></div>
+            </div>
+
+            <div class="concept">
+                <h3>Basis</h3>
+                <p>A linearly independent set that spans the space</p>
+                <div class="example">
+                    <p>Standard basis for \(\mathbb{R}^2\): \(\left\{\begin{bmatrix} 1 \\ 0 \end{bmatrix}, \begin{bmatrix} 0 \\ 1 \end{bmatrix}\right\}\)</p>
+                    <div id="basis-visualization" class="graph"></div>
+                </div>
+            </div>
+
+            <div class="concept">
+                <h3>Dimension</h3>
+                <p>The number of vectors in a basis for the space</p>
+                <ul>
+                    <li>\(\mathbb{R}^2\) has dimension 2</li>
+                    <li>\(\mathbb{R}^3\) has dimension 3</li>
+                </ul>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Western Pacific University - IBM Department</p>
+        <p>Instructor: Mr. Eremas Tade</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
